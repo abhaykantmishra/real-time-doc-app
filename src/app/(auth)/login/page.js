@@ -192,7 +192,7 @@ export default function LoginPage() {
 
         <div className="text-center md:text-left">
           <p className="text-sm text-gray-500">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/signup" className="text-purple-600 hover:underline">
               Sign up
             </Link>
@@ -226,7 +226,7 @@ export default function LoginPage() {
               </svg>
             </div>
             <h2 className="text-3xl font-bold mb-2">Welcome back to the fun!</h2>
-            <p className="text-white/80">We've missed your creativity. Log in to continue your document journey.</p>
+            <p className="text-white/80">We&apos;ve missed your creativity. Log in to continue your document journey.</p>
           </div>
 
           <div className="p-6 bg-white/10 backdrop-blur-sm rounded-xl rotate-1 hover:rotate-0 transition-transform duration-300">
