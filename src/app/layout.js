@@ -3,6 +3,9 @@ import "./globals.css";
 import "@liveblocks/react-ui/styles.css";
 import "@liveblocks/react-tiptap/styles.css";
 import { AuthProvider } from "@/components/auth-provider";
+// import {
+//   ClerkProvider,
+// } from "@clerk/nextjs";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,14 +25,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <AuthProvider>
-        {children}
-        </AuthProvider>
-      </body>
-    </html> 
+    // <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <AuthProvider>
+          {children}
+          </AuthProvider>
+        </body>
+      </html> 
+    // </ClerkProvider>
   );
 }
