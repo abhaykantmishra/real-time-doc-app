@@ -6,8 +6,6 @@ import { getToken } from "next-auth/jwt";
 
 export async function POST(request) {
   try {
-    await dbConnect();
-
     let token;
     try {
         token = await getToken({
@@ -22,9 +20,12 @@ export async function POST(request) {
     if (!userId) {
         return NextResponse.json({msg:"User ID not provided or invalid!"}, {status: 400});
     }
-    
 
-    const newDoc = await Document.create({ owner: userId, title: "Untitled Document" });
+    await dbConnect();
+
+    const { title, content } = await request.json();   
+    
+    const newDoc = await Document.create({ owner: userId, title: title || "Untitled Document", content:content || ""  });
 
     if (!newDoc) {
       return NextResponse.json(

@@ -93,11 +93,13 @@ export default function DashboardPage() {
 
   async function createNewDocument(){
     try {
-      await axios.post("/api/v1/document/create")
+      await axios.post("/api/v1/document/create", { title: "Untitled Document" })
       .then((res) => {
         console.log(res.data);
         if (res.status === 201) {
-          const newDoc = res.data;
+          alert(res.data.msg)
+          const newDoc = res.data.document;
+          setAllUserDocs((prevDocs) => [...prevDocs, newDoc]);
           // setRecentDocs((prevDocs) => [...prevDocs, newDoc]);
         }
       })
