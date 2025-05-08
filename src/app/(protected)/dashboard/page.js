@@ -130,7 +130,24 @@ export default function DashboardPage() {
     }
   }
 
-  async function duplicateDocument(docId){}
+  async function duplicateDocument(docId){
+    try {
+      await axios.post("/api/v1/document/duplicate", { docId })
+      .then((res) => {
+        console.log(res.data);
+        if (res.status === 200) {
+          alert(res.data.msg)
+          getUserDocs();
+        }
+      })
+      .catch((err) => {
+        console.error("Error duplicating document:", err);
+        // Handle error
+      })
+    } catch (error) {
+      console.error("Error duplicating document:", error);
+    }
+  }
 
   async function makeDocPublic(docId){
     try {
@@ -147,6 +164,25 @@ export default function DashboardPage() {
       })
     } catch (error) {
       console.error("Error making document public:", error);
+    }
+  }
+
+  async function deleteDocument(docId){
+    try {
+      await axios.post("/api/v1/document/delete", {  docId })
+      .then((res) => {
+        console.log(res.data);
+        if (res.status === 200) {
+          alert(res.data.msg)
+          getUserDocs();
+        }
+      })
+      .catch((err) => {
+        console.error("Error deleting document:", err);
+        // Handle error
+      })
+    } catch (error) {
+      console.error("Error deleting document:", error);
     }
   }
 
@@ -239,9 +275,11 @@ export default function DashboardPage() {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end" className="w-48">
-                                <DropdownMenuItem onClick={() => { router.push(`/docs/${doc._id || doc.id}`) }} className="cursor-pointer">
-                                  <Edit className="mr-2 h-4 w-4" />
+                                <DropdownMenuItem className="cursor-pointer">
+                                  <Link href={`/docs/${doc._id || doc.id}`} className="flex flex-row items-center">
+                                  <Edit className="mr-4 h-4 w-4" />
                                   <span>Edit</span>
+                                  </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={ () => {duplicateDocument(doc._id)} } className="cursor-pointer">
                                   <Copy className="mr-2 h-4 w-4" />
@@ -279,7 +317,7 @@ export default function DashboardPage() {
                                   <span>Download</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem className="cursor-pointer text-red-600">
+                                <DropdownMenuItem onClick={() => deleteDocument(doc._id)} className="cursor-pointer text-red-600">
                                   <Trash className="mr-2 h-4 w-4" />
                                   <span>Delete</span>
                                 </DropdownMenuItem>
