@@ -98,7 +98,7 @@ export default function ContactPage() {
           <div className="mx-auto max-w-2xl">
             <div className="mb-8 text-center">
               <h1 className="text-3xl font-bold mb-2">Contact Us</h1>
-              <p className="text-gray-500">Have questions or need help? We're here for you.</p>
+              <p className="text-gray-500">Have questions or need help? We&apos;re here for you.</p>
             </div>
 
             {!isSubmitted ? (
@@ -208,7 +208,7 @@ export default function ContactPage() {
                 </div>
                 <h2 className="text-xl font-bold mb-2">Message sent!</h2>
                 <p className="text-gray-500 mb-6">
-                  Thank you for reaching out. We'll get back to you as soon as possible.
+                  Thank you for reaching out. We&apos;ll get back to you as soon as possible.
                 </p>
                 <Button
                   className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity"
