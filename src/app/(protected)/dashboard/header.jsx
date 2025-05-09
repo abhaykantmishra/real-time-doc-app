@@ -22,6 +22,10 @@ export function DashboardHeader() {
   const session = useSession();
   const user = session.data?.user
 
+  useEffect(() => {
+    console.log("User session:", session)
+  },[])
+
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center border-b bg-white px-4 md:px-6">
       <div className="flex items-center gap-2 md:hidden">
@@ -54,7 +58,7 @@ export function DashboardHeader() {
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={user?.image} alt="User" />
-                <AvatarFallback className="bg-purple-100 text-purple-600">{user.name.at(0).toLocaleUpperCase()}</AvatarFallback>
+                <AvatarFallback className="bg-purple-100 text-purple-600">{user?.name?.at(0).toLocaleUpperCase()}</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>

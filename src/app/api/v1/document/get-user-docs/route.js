@@ -18,6 +18,8 @@ export async function GET(request){
         } catch (error) {
             return NextResponse.json({msg:"Unauthorized", err:error}, {status: 401});
         }
+
+        console.log("Token: ", token);
         
         const userId = token.id;
         if (!userId) {

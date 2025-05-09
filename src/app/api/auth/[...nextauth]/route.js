@@ -90,9 +90,30 @@ const handler = NextAuth({
           return session;
         },
         async jwt({ token, user }) {
-          if (user) token.id = user._id;
+          await dbConnect();
+        
+          // First time login: user object is available
+          if (user) {
+            const dbUser = await User.findOne({ email: user.email });
+        
+            if (dbUser) {
+              token.id = dbUser._id.toString();
+              token.role = dbUser.role;
+              token.username = dbUser.username;
+            }
+          } else if (token?.email) {
+            // Subsequent calls: get user info from token or fetch from DB if needed
+            const dbUser = await User.findOne({ email: token.email });
+        
+            if (dbUser) {
+              token.id = dbUser._id.toString();
+              token.role = dbUser.role;
+              token.username = dbUser.username;
+            }
+          }
+        
           return token;
-        },
+        }
       },
     
     pages: {
