@@ -14,7 +14,8 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarProvider,
+  SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -23,13 +24,18 @@ export function DashboardSidebar() {
   const pathname = usePathname()
 
   return (
-    <SidebarProvider defaultOpen={true}>
-      <Sidebar className="border-r">
+    <>
+      {/* Mobile trigger - visible only on small screens */}
+      <div className="fixed top-4 left-4 z-40 md:hidden">
+        <SidebarTrigger />
+      </div>
+
+      <Sidebar collapsible="offcanvas">
         <SidebarHeader>
           <div className="p-2">
             <Button className="w-full justify-start bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity">
               <PlusCircle className="mr-2 h-4 w-4" />
-              New Document
+              <span>New Document</span>
             </Button>
           </div>
         </SidebarHeader>
@@ -153,7 +159,8 @@ export function DashboardSidebar() {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
+        <SidebarRail />
       </Sidebar>
-    </SidebarProvider>
+    </>
   )
 }

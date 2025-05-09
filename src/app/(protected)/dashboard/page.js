@@ -7,9 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileText, Plus, Star, Clock, Folder, Grid3X3, List, Search, MoreHorizontalIcon, Globe } from 'lucide-react'
 import { DashboardHeader } from "./header"
 import { DashboardSidebar } from "./sidebar"
-import { withAuthProtection } from "@/lib/auth-protector-hoc"
 import { useEffect, useState } from "react"
 import axios from "axios";
+import { SidebarProvider } from "@/components/ui/sidebar"
 
 import { MoreHorizontal, Download, Trash, Share, Copy, Edit } from "lucide-react"
 import {
@@ -189,6 +189,7 @@ export default function DashboardPage() {
   }
 
   return (
+    <SidebarProvider defaultOpen={true}>
     <div className="flex min-h-screen flex-col">
       <DashboardHeader />
       <div className="flex flex-1">
@@ -443,6 +444,7 @@ export default function DashboardPage() {
         </main>
       </div>
     </div>
+    </SidebarProvider>
   )
 }
 

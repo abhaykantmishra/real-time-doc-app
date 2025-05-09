@@ -304,13 +304,13 @@ export default function HomePage() {
           </div>
           <p className="text-center text-sm text-gray-500 md:text-left">© 2025 FunkyDocs. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link href="#" className="text-sm text-gray-500 hover:underline">
+            <Link href="/terms" className="text-sm text-gray-500 hover:underline">
               Terms
             </Link>
-            <Link href="#" className="text-sm text-gray-500 hover:underline">
+            <Link href="/privacy" className="text-sm text-gray-500 hover:underline">
               Privacy
             </Link>
-            <Link href="#" className="text-sm text-gray-500 hover:underline">
+            <Link href="/contact" className="text-sm text-gray-500 hover:underline">
               Contact
             </Link>
           </div>

@@ -1,8 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
-import { FileText, Bell, Settings, User, LogOut, Menu } from 'lucide-react'
+import { useEffect, useState } from "react"
+import { FileText, Bell, Settings, User, LogOut, Menu, Mail } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -14,9 +14,13 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 
 export function DashboardHeader() {
   const [showMobileMenu, setShowMobileMenu] = useState(false)
+
+  const session = useSession();
+  const user = session.data?.user
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center border-b bg-white px-4 md:px-6">
@@ -27,7 +31,7 @@ export function DashboardHeader() {
           className="md:hidden"
           onClick={() => setShowMobileMenu(!showMobileMenu)}
         >
-          <Menu className="h-5 w-5" />
+          {/* <Menu className="h-5 w-5" /> */}
           <span className="sr-only">Toggle menu</span>
         </Button>
       </div>
@@ -49,8 +53,8 @@ export function DashboardHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-                <AvatarFallback className="bg-purple-100 text-purple-600">JD</AvatarFallback>
+                <AvatarImage src={user?.image} alt="User" />
+                <AvatarFallback className="bg-purple-100 text-purple-600">{user.name.at(0).toLocaleUpperCase()}</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
@@ -59,11 +63,11 @@ export function DashboardHeader() {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+              <span>{user?.name}</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
+              <Mail className="mr-2 h-4 w-4" />
+              <span>{user?.email}</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>

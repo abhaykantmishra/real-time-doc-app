@@ -3,6 +3,7 @@ import "./globals.css";
 import "@liveblocks/react-ui/styles.css";
 import "@liveblocks/react-tiptap/styles.css";
 import { AuthProvider } from "@/components/auth-provider";
+import { Toaster } from "@/components/ui/toaster";
 // import {
 //   ClerkProvider,
 // } from "@clerk/nextjs";
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
         >
           <AuthProvider>
           {children}
+          {/* <Toaster /> */}
           </AuthProvider>
         </body>
       </html> 
