@@ -18,13 +18,15 @@ import { useLiveblocksExtension, FloatingToolbar } from "@liveblocks/react-tipta
 
 
 import { useEditorStore } from '@/store/use-editor-store'
+import { useState } from 'react'
 
 // import { io } from "socket.io-client";
 // import { useEffect } from 'react'
 
-const Tiptap = () => {
+const Tiptap = ({docDetail}) => {
 
   const liveblocks = useLiveblocksExtension();
+  const [doc, setDoc] = useState(docDetail);
 
   // useEffect(() => {
   //   const socket = io("http://localhost:3002")

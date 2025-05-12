@@ -129,7 +129,7 @@ const ToolbarButton = ({ onClick, isActive, icon:Icon }) => {
 export default function Toolbar() {
 
     const { editor } = useEditorStore()
-    console.log("Toolbar editor: ",editor)
+    // console.log("Toolbar editor: ",editor)
 
     const sections = [
         [

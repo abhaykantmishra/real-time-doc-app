@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { History, Star, MessageSquare, Lock, Video, FileEdit, Globe } from "lucide-react"
+import { History, Star, MessageSquare, Lock, Video, FileEdit, Globe, User, Mail, LogOut } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -10,12 +10,16 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import axios from "axios"
+import { signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 
 
 const MenuItem = ({ label, children }) => {
@@ -32,10 +36,15 @@ const MenuItem = ({ label, children }) => {
 }
 
 export function Navbar( {docDetail} ) {
-  const [documentTitle, setDocumentTitle] = React.useState("Untitled document")
+
+  const [doc, setDoc] = React.useState(docDetail);
+  const [documentTitle, setDocumentTitle] = React.useState(doc?.title || "Untitled Doc")
   const [isEditingTitle, setIsEditingTitle] = React.useState(false)
   const [isStarred, setIsStarred] = React.useState(false)
   const inputRef = React.useRef(null)
+
+  const session = useSession();
+  const user = session.data?.user
 
   const handleTitleClick = () => {
     setIsEditingTitle(true)
@@ -50,6 +59,13 @@ export function Navbar( {docDetail} ) {
 
   const handleTitleChange = (e) => {
     setDocumentTitle(e.target.value)
+
+    setDoc((prev) => (
+      {
+        ...prev, 
+        title:e.taget.value
+      }
+    ))
   }
 
   const handleTitleBlur = () => {
@@ -68,8 +84,26 @@ export function Navbar( {docDetail} ) {
     }
   }
 
-  const toggleStar = () => {
+  const toggleStar = async () => {
     setIsStarred(!isStarred)
+    try {
+      await axios.post("/api/v1/document/toggle-starred", { docId })
+      .then((res) => {
+        console.log(res.data);
+        if (res.status === 200) {
+          alert(res.data.msg)
+          // getStarredDocs();
+        }
+      })
+      .catch((err) => {
+        console.error("Error starring document:", err);
+        // Handle error
+        alert(err)
+      })
+    } catch (error) {
+      console.error("Error starring document:", error);
+      alert(error)
+    }
   }
 
   return (
@@ -127,7 +161,7 @@ export function Navbar( {docDetail} ) {
                     </DropdownMenuGroup>
                 </MenuItem>
                 <button className="hover:bg-gray-100 rounded px-1">
-                    {`last saved ${docDetail?.lastSaved || "seconds ago"}`}
+                    {`last saved ${doc?.updatedAt || "seconds ago"}`}
                 </button>
               </div>
             </div>
@@ -158,8 +192,8 @@ export function Navbar( {docDetail} ) {
 
             <Button variant="outline" size="sm" className="gap-1 rounded-full border-gray-300">
                 {
-                    docDetail?.isPublic === true ? (
-                        <button className="flex justify-center items-center">
+                    doc?.isPublic === true ? (
+                        <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert("Link copied to clipboard") }} className="flex justify-center items-center">
                             <Globe className="h-3.5 w-3.5 text-gray-500 mr-2" />
                             Copy Link
                         </button>
@@ -173,10 +207,33 @@ export function Navbar( {docDetail} ) {
               
             </Button>
 
-            <Avatar className="h-8 w-8">
-              <AvatarImage src="/placeholder.svg?height=32&width=32" />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={user?.image || ""} alt="User" />
+                    <AvatarFallback className="bg-purple-100 text-purple-600">{user?.name?.at(0).toLocaleUpperCase()}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>{user?.name}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Mail className="mr-2 h-4 w-4" />
+                  <span>{user?.email}</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
