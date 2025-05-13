@@ -1,7 +1,7 @@
 "use client";
 
-import Tiptap from "@/components/editor";
-import { Navbar } from "@/components/navbar";
+import Tiptap from "@/app/(protected)/docs/[docId]/editor";
+import { Navbar } from "@/app/(protected)/docs/[docId]/navbar";
 import Toolbar from "@/components/toolbar";
 import { Room } from "@/components/room";
 import { useEffect, useState } from "react";

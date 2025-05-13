@@ -20,6 +20,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import axios from "axios"
 import { signOut } from "next-auth/react"
 import { useSession } from "next-auth/react"
+import { ShareButton } from "./share-button"
 
 
 const MenuItem = ({ label, children }) => {
@@ -192,17 +193,18 @@ export function Navbar( {docDetail} ) {
 
             <Button variant="outline" size="sm" className="gap-1 rounded-full border-gray-300">
                 {
-                    doc?.isPublic === true ? (
-                        <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert("Link copied to clipboard") }} className="flex justify-center items-center">
-                            <Globe className="h-3.5 w-3.5 text-gray-500 mr-2" />
-                            Copy Link
-                        </button>
-                    ) : (
-                        <button className="flex justify-center items-center">
-                            <Lock className="h-3.5 w-3.5 text-gray-500 mr-2" />
-                            Share
-                        </button>
-                    )
+                    // doc?.isPublic === true ? (
+                    //     <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert("Link copied to clipboard") }} className="flex justify-center items-center">
+                    //         <Globe className="h-3.5 w-3.5 text-gray-500 mr-2" />
+                    //         Copy Link
+                    //     </button>
+                    // ) : (
+                    //     <button className="flex justify-center items-center">
+                    //         <Lock className="h-3.5 w-3.5 text-gray-500 mr-2" />
+                    //         Share
+                    //     </button>
+                    // )
+                    <ShareButton docDetails={doc} />
                 }
               
             </Button>
