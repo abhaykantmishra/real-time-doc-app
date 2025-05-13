@@ -190,14 +190,14 @@ export default function DashboardPage() {
 
   return (
     <SidebarProvider defaultOpen={true}>
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen w-full flex-col">
       <DashboardHeader />
       <div className="flex flex-1">
         <div className="max-w-1/5">
         <DashboardSidebar />
         </div>
-        <main className="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6">
-          <div className="mx-auto max-w-7xl">
+        <main className="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 md:w-4/5">
+          <div className="mx-auto">
             <div className="mb-8 flex flex-col gap-2">
               <h1 className="text-2xl font-bold">Dashboard</h1>
               <p className="text-muted-foreground">Create and manage your documents</p>
@@ -210,9 +210,9 @@ export default function DashboardPage() {
               >
                 <Plus className="mr-2 h-4 w-4" /> New Document
               </Button>
-              <Button variant="outline">
+              {/* <Button variant="outline">
                 <Folder className="mr-2 h-4 w-4" /> New Folder
-              </Button>
+              </Button> */}
               <div className="relative ml-auto flex-1 md:max-w-xs">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <input
@@ -233,13 +233,17 @@ export default function DashboardPage() {
 
             <Tabs defaultValue="recent" className="mb-8">
               <TabsList className="mb-4">
+
                 <TabsTrigger value="recent" className="text-sm">
                   <Clock className="mr-2 h-4 w-4" /> Recent
                 </TabsTrigger>
+
                 <TabsTrigger value="starred" className="text-sm">
                   <Star className="mr-2 h-4 w-4" /> Starred
                 </TabsTrigger>
+
               </TabsList>
+
               {/* Recent Document tab  */}
               <TabsContent value="recent" className="mt-0">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -385,8 +389,11 @@ export default function DashboardPage() {
                   }
                 </div>
               </TabsContent>
+
             </Tabs>
 
+
+            {/* Template Section  */}
             <div className="mb-8">
               <h2 className="mb-4 text-xl font-semibold">Templates</h2>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -414,7 +421,10 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div>
+
+            
+            {/* Folders Section  */}
+            {/* <div>
               <h2 className="mb-4 text-xl font-semibold">Folders</h2>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {[
@@ -439,7 +449,8 @@ export default function DashboardPage() {
                   </Card>
                 ))}
               </div>
-            </div>
+            </div> */}
+
           </div>
         </main>
       </div>

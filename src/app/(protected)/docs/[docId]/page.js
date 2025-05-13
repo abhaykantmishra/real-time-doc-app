@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 
-export default function docsPage() {
+export default function DocsPage() {
   
   const params = useParams();
   const docId = params.docId
