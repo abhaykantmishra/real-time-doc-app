@@ -21,7 +21,7 @@ export default function docsPage() {
     try{
       await axios.get(`/api/v1/document/get-doc/${docId}`)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.document);
         setDoc(res.data.document);
         setLoading(false);
       })

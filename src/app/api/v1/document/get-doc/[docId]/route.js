@@ -26,7 +26,7 @@ export async function GET(request) {
             return NextResponse.json({message: "Please provide documentId"}, {status: 400});
         }
 
-        const doc = await Document.findById(docId);
+        const doc = await Document.findById(docId).populate({path:"sharedWith", select:"_id name email image"});
         if(!doc){
             return NextResponse.json({message: "Document not found"}, {status: 404});
         }

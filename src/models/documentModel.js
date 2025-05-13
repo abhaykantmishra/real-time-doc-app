@@ -19,13 +19,17 @@ const documentSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  publicPermission: {
+    type: String,
+    default: "read", // read, write
+  },
   sharedWith:[
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     }
   ],
-  sharedWithPermissions: {
+  sharedWithPermission: {
     type: String,
     default: "read", // read, write
   },

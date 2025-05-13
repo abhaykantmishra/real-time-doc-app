@@ -191,7 +191,7 @@ export function Navbar( {docDetail} ) {
               </TooltipContent>
             </Tooltip>
 
-            <Button variant="outline" size="sm" className="gap-1 rounded-full border-gray-300">
+            <span size="sm" className="">
                 {
                     // doc?.isPublic === true ? (
                     //     <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert("Link copied to clipboard") }} className="flex justify-center items-center">
@@ -207,7 +207,7 @@ export function Navbar( {docDetail} ) {
                     <ShareButton docDetails={doc} />
                 }
               
-            </Button>
+            </span>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

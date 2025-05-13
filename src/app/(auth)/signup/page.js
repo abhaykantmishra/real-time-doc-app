@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
+import axios from "axios"
 
 export default function SignupPage() {
   const router = useRouter()
@@ -37,21 +38,24 @@ export default function SignupPage() {
     try {
       // In a real app, you would register the user here
       // For demo purposes, we'll just sign in with credentials
-      toast({
-        title: "Account created!",
-        description: "Redirecting you to the dashboard...",
-      })
+      const res = await axios.post('/api/v1/user/register', {name, email, password})
+      if(res.status == 200){
+        toast({
+          title: "Account created!",
+          description: "Redirecting you to the dashboard...",
+        })
+      }
+      console.log(res.data)
+      router.push("/dashboard")
 
       // Simulate account creation delay
-      setTimeout(() => {
-        router.push("/dashboard")
-      }, 1500)
     } catch (error) {
       toast({
         title: "Something went wrong",
         description: "Please try again later.",
         variant: "destructive",
       })
+      console.log(error)
     } finally {
       setIsLoading(false)
     }
