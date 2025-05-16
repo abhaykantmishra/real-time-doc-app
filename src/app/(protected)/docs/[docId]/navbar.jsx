@@ -107,33 +107,6 @@ export function Navbar( {docDetail} ) {
     }
   };
 
-  useEffect(() => {
-
-    // i want to apply it after 2 sec of page load 
-
-    
-    const handler = setTimeout(() => {
-      const trimmedTitle = documentTitle.trim() || "Untitled document";
-  
-      // Update doc.title after 3 sec of inactivity
-      setDoc((prev) => ({
-        ...prev,
-        title: trimmedTitle,
-      }));
-  
-      // Optional: Save to backend
-      saveTitleToBackend(trimmedTitle);
-  
-    }, 3000); // 3 seconds
-  
-    // Cleanup timeout if documentTitle changes again before 3 sec
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [documentTitle]);
-
-  // useEffect(() => {console.log(user)},[])
-
   const toggleStar = async () => {
     setIsStarred(!isStarred)
     try {
