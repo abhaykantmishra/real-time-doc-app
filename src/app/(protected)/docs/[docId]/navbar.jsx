@@ -158,7 +158,7 @@ export function Navbar( {docDetail} ) {
 
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                {isEditingTitle ? (
+                {isCurrentUserHaveWriteAccess() && isEditingTitle ? (
                   <Input
                     ref={inputRef}
                     value={documentTitle}
