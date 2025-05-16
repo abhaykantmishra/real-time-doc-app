@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { History, Star, MessageSquare, Lock, Video, FileEdit, Globe, User, Mail, LogOut } from "lucide-react"
-
+import { useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -39,7 +39,7 @@ const MenuItem = ({ label, children }) => {
 export function Navbar( {docDetail} ) {
 
   const [doc, setDoc] = React.useState(docDetail);
-  const [documentTitle, setDocumentTitle] = React.useState(doc?.title || "Untitled Doc")
+  const [documentTitle, setDocumentTitle] = React.useState(doc.title)
   const [isEditingTitle, setIsEditingTitle] = React.useState(false)
   const [isStarred, setIsStarred] = React.useState(false)
   const inputRef = React.useRef(null)
@@ -59,31 +59,80 @@ export function Navbar( {docDetail} ) {
   }
 
   const handleTitleChange = (e) => {
-    setDocumentTitle(e.target.value)
+    setDocumentTitle(e.target.value);
+  };
 
-    setDoc((prev) => (
-      {
-        ...prev, 
-        title:e.taget.value
-      }
-    ))
-  }
+  const updateTitle = (newTitle) => {
+    const trimmedTitle = newTitle.trim() || "Untitled document";
+
+    if(trimmedTitle === doc.title){
+      setIsEditingTitle(false)
+      return
+    }
+  
+    // Update in local state
+    setDocumentTitle(trimmedTitle);
+    setDoc((prev) => ({ ...prev, title: trimmedTitle }));
+  
+    // Optional: save to backend
+    saveTitleToBackend(trimmedTitle);
+  };
 
   const handleTitleBlur = () => {
-    setIsEditingTitle(false)
-    if (documentTitle.trim() === "") {
-      setDocumentTitle("Untitled document")
-    }
+    updateTitle(documentTitle);
+    setIsEditingTitle(false);
   }
 
   const handleTitleKeyDown = (e) => {
     if (e.key === "Enter") {
+      // e.preventDefault()
       setIsEditingTitle(false)
       if (documentTitle.trim() === "") {
         setDocumentTitle("Untitled document")
       }
+      updateTitle(documentTitle);
     }
   }
+
+  const saveTitleToBackend = async (title) => {
+    try {
+      const res = await axios.post("/api/v1/document/update-title", { docId: doc._id, title })
+      if (res.status === 200) {
+        console.log(res.data)
+        alert(res.data.msg)
+      }
+    } catch (error) {
+      console.error("Error updating document title:", error);
+      alert(error)
+    }
+  };
+
+  useEffect(() => {
+
+    // i want to apply it after 2 sec of page load 
+
+    
+    const handler = setTimeout(() => {
+      const trimmedTitle = documentTitle.trim() || "Untitled document";
+  
+      // Update doc.title after 3 sec of inactivity
+      setDoc((prev) => ({
+        ...prev,
+        title: trimmedTitle,
+      }));
+  
+      // Optional: Save to backend
+      saveTitleToBackend(trimmedTitle);
+  
+    }, 3000); // 3 seconds
+  
+    // Cleanup timeout if documentTitle changes again before 3 sec
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [documentTitle]);
+
+  // useEffect(() => {console.log(user)},[])
 
   const toggleStar = async () => {
     setIsStarred(!isStarred)
@@ -104,6 +153,24 @@ export function Navbar( {docDetail} ) {
     } catch (error) {
       console.error("Error starring document:", error);
       alert(error)
+    }
+  }
+
+  const isCurrentUserHaveWriteAccess = () => {
+    if(user.id === doc?.owner){
+      return true;
+    }else if(doc.sharedWithPermission === "write" && doc?.sharedWith.some(person => person._id === user.id) === true){
+      return true;
+    }else {
+      return false;
+    }
+  }
+
+  const isOwner = () => {
+    if(user.id === doc?.owner){
+      return true;
+    }else{
+      return false;
     }
   }
 
@@ -193,19 +260,12 @@ export function Navbar( {docDetail} ) {
 
             <span size="sm" className="">
                 {
-                    // doc?.isPublic === true ? (
-                    //     <button onClick={() => { navigator.clipboard.writeText(window.location.href); alert("Link copied to clipboard") }} className="flex justify-center items-center">
-                    //         <Globe className="h-3.5 w-3.5 text-gray-500 mr-2" />
-                    //         Copy Link
-                    //     </button>
-                    // ) : (
-                    //     <button className="flex justify-center items-center">
-                    //         <Lock className="h-3.5 w-3.5 text-gray-500 mr-2" />
-                    //         Share
-                    //     </button>
-                    // )
+                  isOwner() === true ? (
                     <ShareButton docDetails={doc} />
-                }
+                  ) : (
+                    <></>
+                  )
+                }  
               
             </span>
 
