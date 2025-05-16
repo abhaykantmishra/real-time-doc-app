@@ -20,13 +20,30 @@ import { useLiveblocksExtension, FloatingToolbar } from "@liveblocks/react-tipta
 import { useEditorStore } from '@/store/use-editor-store'
 import { useState } from 'react'
 
+import { useSession } from "next-auth/react"
+
 // import { io } from "socket.io-client";
 // import { useEffect } from 'react'
 
 const Tiptap = ({docDetail}) => {
 
+  const session = useSession();
+  const user = session.data?.user
+
   const liveblocks = useLiveblocksExtension();
   const [doc, setDoc] = useState(docDetail);
+
+  const isCurrentUserHaveWriteAccess = () => {
+    if(user.id === doc?.owner){
+      return true;
+    }else if(doc.sharedWithPermission === "write" && doc?.sharedWith.some(person => person._id === user.id) === true){
+      return true;
+    }else {
+      return false;
+    }
+  }
+
+  const [editable, setEditable] = useState(isCurrentUserHaveWriteAccess());
 
   // useEffect(() => {
   //   const socket = io("http://localhost:3002")
@@ -97,6 +114,7 @@ const Tiptap = ({docDetail}) => {
           </tbody>
         </table>
     `,
+    editable: editable,
   })
 
   return (

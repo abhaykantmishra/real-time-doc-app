@@ -5,7 +5,7 @@ import { useEditorStore } from "@/store/use-editor-store";
 import { Bold, ChevronDown, Italic, Printer, Redo2, SpellCheckIcon, Underline, Undo2 } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "./ui/dropdown-menu";
-
+import { useSession } from "next-auth/react";
 
 const HeadingLevelButton = () => {
     const { editor } = useEditorStore()
@@ -126,7 +126,27 @@ const ToolbarButton = ({ onClick, isActive, icon:Icon }) => {
 }
 
 
-export default function Toolbar() {
+export default function Toolbar({docDetail}) {
+
+    const session = useSession();
+    const user = session.data?.user
+
+    const isCurrentUserHaveWriteAccess = () => {
+        if(user.id === docDetail?.owner){
+          return true;
+        }else if(docDetail.sharedWithPermission === "write" && docDetail?.sharedWith.some(person => person._id === user.id) === true){
+          return true;
+        }else {
+          return false;
+        }
+    }
+
+    if(isCurrentUserHaveWriteAccess() === false){
+        return (
+            <>
+            </>
+        )
+    }
 
     const { editor } = useEditorStore()
     // console.log("Toolbar editor: ",editor)

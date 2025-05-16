@@ -1,7 +1,7 @@
 "use client";
 
-import Tiptap from "@/app/(protected)/docs/[docId]/editor";
-import { Navbar } from "@/app/(protected)/docs/[docId]/navbar";
+import Tiptap from "./editor";
+import { Navbar } from "./navbar";
 import Toolbar from "@/components/toolbar";
 import { Room } from "@/components/room";
 import { useEffect, useState } from "react";
@@ -54,7 +54,7 @@ export default function DocsPage() {
     <>
       <div className="fixed top-0 z-50 w-full">
         <Navbar docDetail={doc} />
-        <Toolbar />
+        <Toolbar docDetail={doc} />
       </div>
       <div className="mt-28">
         <Room>
