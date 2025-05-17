@@ -128,6 +128,8 @@ const ToolbarButton = ({ onClick, isActive, icon:Icon }) => {
 
 export default function Toolbar({docDetail}) {
 
+    const { editor } = useEditorStore()
+
     const session = useSession();
     const user = session.data?.user
 
@@ -148,7 +150,7 @@ export default function Toolbar({docDetail}) {
         )
     }
 
-    // const { editor } = useEditorStore()
+    
     // console.log("Toolbar editor: ",editor)
 
     const sections = [

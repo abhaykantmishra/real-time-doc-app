@@ -28,8 +28,6 @@ import React from 'react'
 
 const Tiptap = ({docDetail}) => {
 
-  const provider = new WebrtcProvider('tiptap-collaboration-cursor-extension', docDetail)
-
   const session = useSession();
   const user = session.data?.user
 
