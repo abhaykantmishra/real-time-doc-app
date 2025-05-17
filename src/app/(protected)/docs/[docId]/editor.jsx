@@ -21,8 +21,6 @@ import { useEditorStore } from '@/store/use-editor-store'
 import { useState } from 'react'
 
 import { useSession } from "next-auth/react"
-import Collaboration from '@tiptap/extension-collaboration'
-import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 import React from 'react'
 
 // import { io } from "socket.io-client";

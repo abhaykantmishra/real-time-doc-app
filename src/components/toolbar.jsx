@@ -148,7 +148,7 @@ export default function Toolbar({docDetail}) {
         )
     }
 
-    const { editor } = useEditorStore()
+    // const { editor } = useEditorStore()
     // console.log("Toolbar editor: ",editor)
 
     const sections = [
