@@ -8,13 +8,19 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 
+import { useSession } from "next-auth/react";
+
 export default function DocsPage() {
+
+  const session = useSession();
+  const user = session.data?.user
   
   const params = useParams();
   const docId = params.docId
 
   const [doc, setDoc] = useState({});
   const [isLoading, setLoading] = useState(false);
+  const [isAccesstoCurrentUser, setIsAccesstoCurrentUser] = useState(false);
 
   async function fetchDoc(docId) {
     setLoading(true);
@@ -23,6 +29,9 @@ export default function DocsPage() {
       .then((res) => {
         console.log(res.data.document);
         setDoc(res.data.document);
+        const isaccess = handleAccesstoCurrentUser(res.data.document);
+        console.log("isAccesstoCurrentUser: ", isaccess);
+        setIsAccesstoCurrentUser(isaccess);
         setLoading(false);
       })
       .catch((err) => {
@@ -33,6 +42,19 @@ export default function DocsPage() {
     catch (error) {
       console.error("Error fetching document:", error);
       setLoading(false);
+    }
+  }
+
+  function handleAccesstoCurrentUser(doc){
+    console.log("userId:", user?.id , " owner: ", doc.owner);
+    if(user.id === doc.owner){
+      return true;
+    }
+    else if( doc?.sharedWith.some(person => person._id === user.id) === true ){
+      return true;
+    }
+    else{
+      return false;
     }
   }
   
@@ -52,15 +74,23 @@ export default function DocsPage() {
 
   return (
     <>
-      <div className="fixed top-0 z-50 w-full">
-        <Navbar docDetail={doc} />
-        <Toolbar docDetail={doc} />
-      </div>
-      <div className="mt-28">
-        <Room>
-            <Tiptap docDetail={doc} />
-        </Room>
-      </div>
+    {
+      isAccesstoCurrentUser === true ? (
+        <>
+        <div className="fixed top-0 z-50 w-full">
+          <Navbar docDetail={doc} />
+          <Toolbar docDetail={doc} />
+        </div>
+        <div className="mt-28">
+          <Room currentUser={{name:user.name, image:user.image, color:"#FFA500"}}>
+              <Tiptap docDetail={doc} />
+          </Room>
+        </div>
+        </>
+      ) : (
+        <></>
+      ) 
+    }
     </>
   );
 }
